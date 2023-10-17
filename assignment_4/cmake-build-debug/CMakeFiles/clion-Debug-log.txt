@@ -1,0 +1,4 @@
+"/Users/simenm/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/CLion.app/Contents/bin/cmake/mac/bin/cmake" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=/Users/simenm/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/CLion.app/Contents/bin/ninja/mac/ninja" -G Ninja -S /Users/simenm/Documents/GitHub/Algoritmer_og_DataStrukturer/assignment_4 -B /Users/simenm/Documents/GitHub/Algoritmer_og_DataStrukturer/assignment_4/cmake-build-debug
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/simenm/Documents/GitHub/Algoritmer_og_DataStrukturer/assignment_4/cmake-build-debug
