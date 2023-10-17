@@ -184,7 +184,7 @@ void menu()
 
 // Template function that runs if the user wishes to type in their own array and values:
 template <typename T>
-int get_custom_input()
+void get_custom_input()
 {
     // Element to find is always same type as the array:
     T element_to_find;
@@ -208,7 +208,7 @@ int get_custom_input()
     if(!validate_input<T>(input_arr))
     {
         std::cout << "Invalid input for chosen datatype" << std::endl;
-        return -1;
+        return;
     }
 
     // Append everything entered into the array and ignore spaces.
@@ -275,7 +275,6 @@ int get_custom_input()
 
     // Free up the memory used by the array
     delete[] new_arr;
-    return 0;
 }
 
 int main()
