@@ -159,27 +159,36 @@ void get_custom_input()
 
     int new_size = new_end - elements;
 
+    // Creating a dynamic array to account for portability of variable sized array declaration.
     T* new_arr = new T[new_size];
 
-    // Adressing the new array:
+    // Addressing the new array:
     for(int i{0}; i < new_size; ++i)
     {
         new_arr[i] = elements[i];
     }
 
+    // Get element_to_find input from user:
     std::cout << "Enter the element to find:" << std::endl;
     std::cin >> element_to_find;
 
+
+    // Pass all the required arguments to the InterpolationSearch function and store the return value in found_at
     int found_at = InterpolationSearch<T>(new_arr, count, 0, count - 1, element_to_find);
 
+    // If found_at is greater than -1, its 0 or higher. Which means it was found in the list.
     if(found_at > -1)
     {
         std::cout << "Element " << element_to_find << " found at index: " << found_at  << std::endl;
     }
+
+    // Else, it was not found because return value was -1, signifying no such value found.
     else
     {
         std::cout << "\nCouldn't find element in the list" << std::endl;
     }
+
+    // Free up the memory used by the array
     delete[] new_arr;
 }
 
@@ -189,19 +198,26 @@ int main()
     int choice = 0;
     std::string datatype;
 
+    // While loop containing program. Runs as long as the user doesn't choose option 3.
     while(true)
     {
+        // Clearing previous datatype input and choice input.
         datatype.clear();
         choice = 0;
+
+        // Querying the user to choose an option
         std::cout << "\nEnter choice" << std::endl;
 
         // Display the menu options
         menu();
         std::cin >> choice;
 
+        // What to do based on the users input.
         switch(choice)
         {
             case 1:
+                // Only support int, float and string.
+                // Program is scalable, so allowing for double and long is easily done.
                 std::cout << "Enter datatype: (int, float, string)" << std::endl;
                 std::cin >> datatype;
 
@@ -220,6 +236,7 @@ int main()
                     get_custom_input<std::string>();
                 }
 
+                // If any other datatype is written, the program notifies the user of invalid input, but doesn't crash.
                 else
                 {
                     std::cout << "Invalid datatype input, try again with a valid datatype (int, float string) ..." << std::endl;

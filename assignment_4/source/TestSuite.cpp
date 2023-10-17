@@ -84,7 +84,7 @@ void test_suite()
     std::cout << "Testing array of integers:" << std::endl;
     for(const auto& test : Int_Tests)
     {
-        int result = InterpolationSearch(test._arr, test._size_of_array, test._lo, test._hi, test._value_to_find);
+        int result = InterpolationSearch<int>(test._arr, test._size_of_array, test._lo, test._hi, test._value_to_find);
 
         if(result == test._expected_return_value)
         {
@@ -101,12 +101,12 @@ void test_suite()
                 }
             }
             tests_passed++;
-            std::cout << "Test to find " << test._value_to_find << " in the list " << array_elements << " with expected return value " << test._expected_return_value << " passed." << std::endl;
+            std::cout << "Test to find " << test._value_to_find << " in the list [" << array_elements << "] with expected return value " << test._expected_return_value << " passed." << std::endl;
         }
 
         else
         {
-            std::cout << "Test to find " << test._value_to_find << " in the list " << array_elements << " with expected return value " << test._expected_return_value << " failed." << std::endl;
+            std::cout << "Test to find " << test._value_to_find << " in the list [" << array_elements << "] with expected return value " << test._expected_return_value << " failed." << std::endl;
         }
         array_elements.clear();
     }
@@ -117,7 +117,7 @@ void test_suite()
    std::cout << "\nTesting array of floats:" << std::endl;
     for(const auto& test : Float_Tests)
     {
-        int result = InterpolationSearch(test._arr, test._size_of_array, test._lo, test._hi, test._value_to_find);
+        int result = InterpolationSearch<float>(test._arr, test._size_of_array, test._lo, test._hi, test._value_to_find);
 
         if(result == test._expected_return_value)
         {
@@ -141,12 +141,12 @@ void test_suite()
                 }
             }
             tests_passed++;
-            std::cout << "Test to find " << test._value_to_find << " in the list " << array_elements << " with expected return value " << test._expected_return_value << " passed." << std::endl;
+            std::cout << "Test to find " << test._value_to_find << " in the list [" << array_elements << "] with expected return value " << test._expected_return_value << " passed." << std::endl;
         }
 
         else
         {
-            std::cout << "Test to find " << test._value_to_find << " in the list " << array_elements << " with expected return value " << test._expected_return_value << " failed." << std::endl;
+            std::cout << "Test to find " << test._value_to_find << " in the list [" << array_elements << "] with expected return value " << test._expected_return_value << " failed." << std::endl;
         }
         array_elements.clear();
     }
@@ -157,7 +157,7 @@ void test_suite()
     std::cout << "\nTesting array of strings:" << std::endl;
     for(const auto& test : String_Tests)
     {
-        int result = InterpolationSearch(test._arr, test._size_of_array, test._lo, test._hi, test._value_to_find);
+        int result = InterpolationSearch<std::string>(test._arr, test._size_of_array, test._lo, test._hi, test._value_to_find);
 
         if(result == test._expected_return_value)
         {
@@ -174,16 +174,15 @@ void test_suite()
                 }
             }
             tests_passed++;
-            std::cout << "Test to find " << test._value_to_find << " in the list " << array_elements << " with expected return value " << test._expected_return_value << " passed." << std::endl;
+            std::cout << "Test to find " << test._value_to_find << " in the list [" << array_elements << "] with expected return value " << test._expected_return_value << " passed." << std::endl;
         }
 
         else
         {
-            std::cout << "Test to find " << test._value_to_find << " in the list " << array_elements << " with expected return value " << test._expected_return_value << " failed." << std::endl;
+            std::cout << "Test to find " << test._value_to_find << " in the list [" << array_elements << "] with expected return value " << test._expected_return_value << " failed." << std::endl;
         }
         array_elements.clear();
     }
 
     std::cout << "\nPassed " << tests_passed << " / 4" << std::endl;
-    tests_passed = 0;
 }
