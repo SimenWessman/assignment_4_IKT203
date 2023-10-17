@@ -4,6 +4,70 @@
 // Max array input size, there is no need for our program at this level to ever work with more than 255 elements.
 #define MAX_SIZE     255
 
+// Function to validate user input:
+template <typename T>
+bool validate_input(const std::string& str)
+{
+
+    std::istringstream iss(str);
+    std::string token;
+
+    // If the datatype of the input is supposed to be an integer
+    if constexpr (std::is_same_v<T, int>)
+    {
+        // Iterate over every character
+        for (char c : str)
+        {
+            // If it's not a digit
+            if (!std::isdigit(c) && c != ',' && c != ' ' && c != '-')
+            {
+                // Return false (The user input is not valid)
+                return false;
+            }
+        }
+    }
+
+
+    else if constexpr (std::is_same_v<T, float>)
+    {
+
+        // Read the entire string
+        while (getline(iss, token, ','))
+        {
+            // Separate into parts
+            std::string trimmed_token = token;
+
+            // Removing everything we don't want like whitespaces and such.
+            trimmed_token.erase(trimmed_token.begin(), std::find_if(trimmed_token.begin(), trimmed_token.end(), [](unsigned char ch)
+            {
+                return !std::isspace(ch);
+            }));
+
+            bool has_dot = false;
+
+            for (char c : trimmed_token)
+            {
+                if (c == '.')
+                {
+                    if (has_dot) return false; // multiple dots in one token are not allowed
+                    has_dot = true;
+
+                }
+
+                // If its not a character, not a dash, not a space, and not a comma
+                else if (!std::isdigit(c) && c != '-' && c != ' ' && c != ',')
+                {
+                    return false;
+                }
+            }
+        }
+    }
+
+    // Don't need to cover the case of a string, because anything can be converted to a string.
+
+    return true;
+}
+
 // Same function as findpos, but adjusted for strings.
 inline auto stringFindPos = [](std::string arr[], std::string &value_to_find, int lo, int hi)
 {
@@ -36,6 +100,7 @@ template<typename T> int InterpolationSearch(T arr[], int size_of_array, int lo,
 
     }
 
+    // If the datatype is a numerical value, we can follow standard procedure:
     else
     {
         if (!(lo <= hi && value_to_find >= arr[lo] && value_to_find <= arr[hi]))
@@ -44,36 +109,49 @@ template<typename T> int InterpolationSearch(T arr[], int size_of_array, int lo,
         }
     }
 
+    // Different call to probe function if the datatype is a string:
     if constexpr (std::is_same_v<T, std::string>)
     {
         pos = stringFindPos(arr, value_to_find, lo, hi);
     }
 
+    // Standard probe function if datatype is numerical:
     else
     {
         pos = findpos(arr, value_to_find, lo, hi);
     }
 
+    // If the current value is the value we are looking for:
     if (arr[pos] == value_to_find)
     {
+        // We are done, return the index we found it at.
         return pos;
     }
 
+    // If datatype is a string, we compare the string we are looking for with the string at the current index, using .compare().
+    // .compare() returns 0 if equal
+    // positive integer (>0): current string is larger than the string we are looking for
+    // negative integer (<0): current string is smaller than the string we are looking for
+
     if constexpr (std::is_same_v<T, std::string>)
     {
+        // If current string is larger than string we are looking for, divide the array and look at first subset
         if (arr[pos].compare(value_to_find) > 0)
         {
             return InterpolationSearch<T>(arr, size_of_array, lo, pos-1, value_to_find);
         }
 
+        // If current string is smaller than string we are looking for, divide the array and look at the second subset.
         else
         {
             return InterpolationSearch<T>(arr, size_of_array, pos+1, hi, value_to_find);
         }
     }
 
+    // If it's not a string follow standard procedure
     else
     {
+        // Compare
         if (arr[pos] > value_to_find)
         {
             return InterpolationSearch<T>(arr, size_of_array, lo, pos-1, value_to_find);
@@ -85,6 +163,7 @@ template<typename T> int InterpolationSearch(T arr[], int size_of_array, int lo,
         }
     }
 
+    // If it never finds anything, happens when the sub array has a size of 0, it returns -1.
     return -1;
 }
 
@@ -105,14 +184,14 @@ void menu()
 
 // Template function that runs if the user wishes to type in their own array and values:
 template <typename T>
-void get_custom_input()
+int get_custom_input()
 {
     // Element to find is always same type as the array:
     T element_to_find;
 
     // Get the array from user input:
     std::string input_arr;
-    std::cout << "Enter numbers to have in array" << std::endl;
+    std::cout << "Enter elements to have in array" << std::endl;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     std::getline(std::cin, input_arr);
@@ -125,6 +204,12 @@ void get_custom_input()
 
     T element;
 
+    // Validating the input:
+    if(!validate_input<T>(input_arr))
+    {
+        std::cout << "Invalid input for chosen datatype" << std::endl;
+        return -1;
+    }
 
     // Append everything entered into the array and ignore spaces.
     while (iss >> element)
@@ -190,8 +275,8 @@ void get_custom_input()
 
     // Free up the memory used by the array
     delete[] new_arr;
+    return 0;
 }
-
 
 int main()
 {
@@ -233,7 +318,7 @@ int main()
 
                 else if(datatype == "string")
                 {
-                    get_custom_input<std::string>();
+                   get_custom_input<std::string>();
                 }
 
                 // If any other datatype is written, the program notifies the user of invalid input, but doesn't crash.
